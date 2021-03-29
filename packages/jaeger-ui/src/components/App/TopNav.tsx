@@ -98,17 +98,13 @@ function isItem(itemOrGroup: ConfigMenuItem | ConfigMenuGroup): itemOrGroup is C
 }
 
 export function TopNavImpl(props: Props) {
-  const { config, router } = props;
+  const { config, router , history } = props;
   const { pathname } = router.location;
-  const menuItems = Array.isArray(config.menu) ? config.menu : [];
-
+  const menuItems = [{label:'Logout'}]
   return (
     <div>
       <Menu theme="dark" mode="horizontal" selectable={false} className="ub-right" selectedKeys={[pathname]}>
-        <Menu.Item>
-          <TraceIDSearchInput />
-        </Menu.Item>
-        {menuItems.map(m => {
+        {/* {menuItems.map(m => {
           if (isItem(m)) {
             return getItem(m);
           }
@@ -117,13 +113,20 @@ export function TopNavImpl(props: Props) {
               <CustomNavDropdown key={m.label} {...m} />
             </Menu.Item>
           );
-        })}
+        })} */}
+        <Menu.Item >
+            <a  onClick={() => {
+                  localStorage.removeItem('userId');
+                    history.push('/login');
+            }}>Logout</a>
+          </Menu.Item>
       </Menu>
       <Menu theme="dark" mode="horizontal" selectable={false} selectedKeys={[pathname]}>
         <Menu.Item>
-          <Link to={prefixUrl('/')} style={{ fontSize: '14px', fontWeight: 500 }}>
-            JAEGER UI
-          </Link>
+          <Link to={prefixUrl('/')}>Traces</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <TraceIDSearchInput />
         </Menu.Item>
         {NAV_LINKS.map(({ matches, to, text }) => {
           const url = typeof to === 'string' ? to : to(props);

@@ -55,7 +55,7 @@ export class PageImpl extends React.Component<TProps> {
     const contentCls = cx({ 'Page--content': !embedded });
     return (
       <div>
-        <Helmet title="Jaeger UI" />
+        <Helmet title="Traces" />
         <Layout>
           {!embedded && (
             <Header className="Page--topNav">

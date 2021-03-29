@@ -6,6 +6,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     tableTable: {
       borderSpacing: 0,
       border: '1px solid rgba(224, 224, 224, 1)',
+      paddingLeft:'15px'
+
     },
     tableHeadRow: {
       outline: 0,
@@ -21,17 +23,17 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     tableHeadCell: {
-      padding: '16px 1px 16px 16px',
-      fontSize: '0.875rem',
       textAlign: 'left',
       verticalAlign: 'inherit',
-      color: theme.palette.text.primary,
-      fontWeight: 500,
-      lineHeight: '1.5rem',
-      borderRight: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
         borderRight: 'none',
       },
+      background: "rgb(236, 236, 236)",
+      border: "1px solid rgb(204, 204, 204)",
+      color: "rgb(35, 35, 35)",
+      fontWeight: 15,
+      lineHeight: "2em",
+      paddingLeft: "1em"
     },
     resizeHandle: {
       position: 'absolute',
@@ -74,11 +76,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     tableCell: {
-      padding: 16,
-      fontSize: '0.875rem',
-      textAlign: 'left',
-      fontWeight: 300,
-      lineHeight: 1.43,
+      padding: 8,
+      textAlign: 'center',
       verticalAlign: 'inherit',
       color: theme.palette.text.primary,
       borderRight: '1px solid rgba(224, 224, 224, 1)',

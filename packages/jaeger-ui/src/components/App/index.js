@@ -17,9 +17,10 @@ import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
-
+import Login from '../Login';
+import { ROUTE_PATH as loginPath } from '../Login/url';
 import NotFound from './NotFound';
-import Page from './Page';
+
 import DependencyGraph from '../DependencyGraph';
 import { ROUTE_PATH as dependenciesPath } from '../DependencyGraph/url';
 import DeepDependencies from '../DeepDependencies';
@@ -35,7 +36,6 @@ import { ROUTE_PATH as tracePath } from '../TracePage/url';
 import JaegerAPI, { DEFAULT_API_ROOT } from '../../api/jaeger';
 import configureStore from '../../utils/configure-store';
 import processScripts from '../../utils/config/process-scripts';
-import prefixUrl from '../../utils/prefix-url';
 
 import '../common/vars.css';
 import '../common/utils.css';
@@ -49,28 +49,36 @@ export default class JaegerUIApp extends Component {
     this.store = configureStore(history);
     JaegerAPI.apiRoot = DEFAULT_API_ROOT;
     processScripts();
+    this.isAuth = this.isAuth.bind(this);
+  }
+
+  isAuth(){
+    console.log(this);
+    if(localStorage.getItem('userId')){
+			return true;
+    }
+    return false;
   }
 
   render() {
     return (
       <Provider store={this.store}>
         <ConnectedRouter history={history}>
-          <Page>
-            <Switch>
-              <Route path={searchPath} component={SearchTracePage} />
-              <Route path={traceDiffPath} component={TraceDiff} />
-              <Route path={tracePath} component={TracePage} />
-              <Route path={dependenciesPath} component={DependencyGraph} />
-              <Route path={deepDependenciesPath} component={DeepDependencies} />
-              <Route path={qualityMetricsPath} component={QualityMetrics} />
-
-              <Redirect exact path="/" to={searchPath} />
-              <Redirect exact path={prefixUrl()} to={searchPath} />
-              <Redirect exact path={prefixUrl('/')} to={searchPath} />
-
+            <Switch> 
+              <Route path={loginPath} component={Login} />
+              <Route exact path="/"  component={Login} />
+              <Route path={searchPath} render={ props => this.isAuth() ? <SearchTracePage {...props}/> : <Redirect to="/login" /> } />
+              <Route path={traceDiffPath} render={ props => this.isAuth() ? <TraceDiff {...props}/> : <Redirect to="/login" /> }  />
+              <Route path={tracePath}  render={ props => this.isAuth() ? <TracePage {...props} /> : <Redirect to="/login" /> }/>
+              <Route path={dependenciesPath} render={ props => this.isAuth() ? <DependencyGraph  {...props}  /> : <Redirect to="/login" /> } />
+              <Route path={deepDependenciesPath} render={ props => this.isAuth() ? <DeepDependencies  {...props} /> : <Redirect to="/login" /> }/>
+              <Route path={qualityMetricsPath} render={ props => this.isAuth() ? <QualityMetrics  {...props} /> : <Redirect to="/login" /> }/>
+              {/* <Redirect exact path={prefixUrl()} to={searchPath} />
+              <Redirect exact path={prefixUrl('/')} to={searchPath} /> */}
+              {/* <Route exact path={tracePath} component={TracePage} /> */}
               <Route component={NotFound} />
             </Switch>
-          </Page>
+          
         </ConnectedRouter>
       </Provider>
     );

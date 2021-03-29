@@ -10,9 +10,8 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License.
-
-import * as React from 'react';
+// limitations under the License
+import React from 'react';
 import { Form, Input, Button, Popover, Select } from 'antd';
 import _get from 'lodash/get';
 import logfmtParser from 'logfmt/lib/logfmt_parser';
@@ -47,6 +46,8 @@ const AdaptedVirtualSelect = reduxFormFieldAdapter({
   onChangeAdapter: option => (option ? option.value : null),
 });
 const ValidatedAdaptedInput = reduxFormFieldAdapter({ AntInputComponent: Input, isValidatedInput: true });
+const startDateMaxTime = moment().format('YYYY-MM-DD');
+const startDateMinTime = moment().subtract(14 , 'days').format('YYYY-MM-DD');
 
 export function getUnixTimeStampInMSFromForm({ startDate, startDateTime, endDate, endDateTime }) {
   const start = `${startDate} ${startDateTime}`;
@@ -57,6 +58,9 @@ export function getUnixTimeStampInMSFromForm({ startDate, startDateTime, endDate
   };
 }
 
+// export function EndDateChange (event){
+//   console.log(event.target.value);
+// } 
 export function convTagsLogfmt(tags) {
   if (!tags) {
     return null;
@@ -253,7 +257,24 @@ export function submitForm(fields, searchTraces) {
   });
 }
 
-export class SearchFormImpl extends React.PureComponent {
+export class SearchFormImpl extends React.PureComponent{
+  constructor(props) {
+    super(props);
+    this.state = {
+      endDateMaxTime: moment().format('YYYY-MM-DD'),
+      endDateMinTime: moment().subtract(7 , 'days').format('YYYY-MM-DD')
+    };
+  }
+  
+  startDateChange= event => {
+     const  endDateMaxTime
+   = parseInt(moment().format('YYYYMMDD'),10) > parseInt(moment(event.target.value).add(7 , 'days').format('YYYYMMDD'),10) ? moment(event.target.value).add(7 , 'days').format('YYYY-MM-DD') : moment().format('YYYY-MM-DD') ;
+     const endDateMinTime
+   = moment(event.target.value).format('YYYY-MM-DD');
+   this.setState({ endDateMaxTime, endDateMinTime})
+
+   };
+
   render() {
     const {
       handleSubmit,
@@ -382,7 +403,9 @@ export class SearchFormImpl extends React.PureComponent {
               type="date"
               component={AdaptedInput}
               placeholder="Start Date"
-              props={{ disabled }}
+              onChange={this.startDateChange}
+              startDateminTime
+              props={{ disabled, max:startDateMaxTime , min:startDateMinTime }}
             />
             <Field name="startDateTime" type="time" component={AdaptedInput} props={{ disabled }} />
           </FormItem>,
@@ -411,7 +434,7 @@ export class SearchFormImpl extends React.PureComponent {
               type="date"
               component={AdaptedInput}
               placeholder="End Date"
-              props={{ disabled }}
+              props={{ disabled,  max:this.state.endDateMaxTime , min:this.state.endDateMinTime, value:this.state.endDateMaxTime}}
             />
             <Field name="endDateTime" type="time" component={AdaptedInput} props={{ disabled }} />
           </FormItem>,
@@ -475,6 +498,8 @@ SearchFormImpl.propTypes = {
   ),
   selectedService: PropTypes.string,
   selectedLookback: PropTypes.string,
+  // endDateMinTime: PropTypes.string,
+  // endDateMaxTime: PropTypes.string
 };
 
 SearchFormImpl.defaultProps = {
@@ -601,10 +626,12 @@ export function mapStateToProps(state) {
     searchMaxLookback: _get(state, 'config.search.maxLookback'),
     selectedService: searchSideBarFormSelector(state, 'service'),
     selectedLookback: searchSideBarFormSelector(state, 'lookback'),
+    endDateMaxTime:moment().format('YYYY-MM-DD'),
+    endDateMinTime: moment().subtract(7 , 'days').format('YYYY-MM-DD')
   };
 }
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   const { searchTraces } = bindActionCreators(jaegerApiActions, dispatch);
   return {
     onSubmit: fields => submitForm(fields, searchTraces),

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import _get from 'lodash/get';
-import memoizeOne from 'memoize-one';
 
 import processDeprecation from './process-deprecation';
 import defaultConfig, { deprecations } from '../../constants/default-config';
@@ -25,7 +24,7 @@ let haveWarnedDeprecations = false;
  * Merge the embedded config from the query service (if present) with the
  * default config from `../../constants/default-config`.
  */
-const getConfig = memoizeOne(function getConfig() {
+export default function getConfig() {
   const getJaegerUiConfig = window.getJaegerUiConfig;
   if (typeof getJaegerUiConfig !== 'function') {
     if (!haveWarnedFactoryFn) {
@@ -54,9 +53,7 @@ const getConfig = memoizeOne(function getConfig() {
     }
   }
   return rv;
-});
-
-export default getConfig;
+}
 
 export function getConfigValue(path: string) {
   return _get(getConfig(), path);

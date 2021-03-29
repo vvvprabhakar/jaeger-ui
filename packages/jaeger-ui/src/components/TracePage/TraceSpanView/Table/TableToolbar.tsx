@@ -182,6 +182,12 @@ export function TableToolbar<T extends Record<string, unknown>>({
             label='Show / hide columns'
             variant='right'
           />
+        <SmallIconActionButton
+          icon={<MdFilterList />}
+          onClick={handleFilterClick}
+          label='Filter by columns'
+          variant='right'
+        />
       </div>
     </Toolbar>
   )

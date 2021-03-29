@@ -29,7 +29,7 @@ export default deepFreeze(
       },
       linkPatterns: [],
       qualityMetrics: {
-        menuEnabled: false,
+        menuEnabled: true,
         menuLabel: 'Trace Quality',
       },
       menu: [
@@ -77,15 +77,14 @@ export default deepFreeze(
       ],
       search: {
         maxLookback: {
-          label: '2 Days',
-          value: '2d',
+          label: '7 Days',
+          value: '7d',
         },
-        maxLimit: 1500,
+        maxLimit: 200,
       },
       tracking: {
         gaID: null,
         trackErrors: true,
-        customWebAnalytics: null,
       },
     },
     // fields that should be individually merged vs wholesale replaced

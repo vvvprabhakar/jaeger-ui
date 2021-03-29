@@ -20,10 +20,33 @@ html > body {
   font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
+#jaeger-ui-root{
+  width: inherit;
+  height: inherit;
+}
+
 a {
   color: #11939a;
 }
 
 a:hover {
   color: #00474e;
+}
+
+.LoginPage{
+  justify-content: center;
+  align-items : center;
+  height: inherit;
+  flex-direction: column;
+  
+}
+.heading{
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.warning{
+  font-size: 24px;
+  color: red;
 }

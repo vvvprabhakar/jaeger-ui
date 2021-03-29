@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export interface ITableSpan {
+  traceID: string;
   type: string;
   name: string;
   count: number;

@@ -17,7 +17,6 @@ import { History as RouterHistory, Location } from 'history';
 import _get from 'lodash/get';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-
 import { trackClearOperation, trackFocusPaths, trackHide, trackSetService, trackShow } from './index.track';
 import Graph from './Graph';
 import Header from './Header';

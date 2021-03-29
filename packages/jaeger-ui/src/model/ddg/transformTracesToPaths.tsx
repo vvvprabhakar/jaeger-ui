@@ -29,6 +29,7 @@ function transformTracesToPaths(
 ): TDdgPayload {
   const dependenciesMap = new Map<String, TDdgPayloadPath>();
   Object.values(traces).forEach(({ data }) => {
+
     if (data) {
       const spanMap: Map<string, Span> = new Map();
       const { traceID } = data;

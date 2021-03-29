@@ -36,10 +36,14 @@ export function getMessageFromError(errData, status) {
 function getJSON(url, options = {}) {
   const { query = null, ...init } = options;
   init.credentials = 'same-origin';
+  init.headers=new Headers({'userId': localStorage.getItem("userId")});
   const queryStr = query ? `?${queryString.stringify(query)}` : '';
   return fetch(`${url}${queryStr}`, init).then(response => {
-    if (response.status < 400) {
-      return response.json();
+    if(response.status === 204){
+        return response;
+    } 
+    if(response.status < 400) {
+       return  response.json();
     }
     return response.text().then(bodyText => {
       let data;
@@ -112,6 +116,9 @@ const JaegerAPI = {
   searchTraces(query) {
     return getJSON(`${this.apiRoot}traces`, { query });
   },
+  validateUser(userId){
+    return getJSON(`${this.apiRoot}users/lookup?loginOrEmail=${userId}`)
+  }
 };
 
 export default JaegerAPI;

@@ -16,7 +16,7 @@ import * as React from 'react';
 import { History as RouterHistory, Location } from 'history';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-
+import Page from '../App/Page';
 import * as jaegerApiActions from '../../actions/jaeger-api';
 import JaegerAPI from '../../api/jaeger';
 import LoadingIndicator from '../common/LoadingIndicator';
@@ -119,6 +119,7 @@ export class UnconnectedQualityMetrics extends React.PureComponent<TProps, TStat
     const { lookback, service, services } = this.props;
     const { qualityMetrics, error, loading } = this.state;
     return (
+      <Page>
       <div className="QualityMetrics">
         <Header
           lookback={lookback}
@@ -190,6 +191,7 @@ export class UnconnectedQualityMetrics extends React.PureComponent<TProps, TStat
         {loading && <LoadingIndicator centered />}
         {error && <div className="QualityMetrics--Error">{error.message}</div>}
       </div>
+      </Page>
     );
   }
 }

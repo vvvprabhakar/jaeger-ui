@@ -17,7 +17,6 @@ import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import DAG from './DAG';
 import DependencyForceGraph from './DependencyForceGraph';
 import ErrorMessage from '../common/ErrorMessage';

@@ -41,7 +41,7 @@ function fetchTraceDone(state, { meta, payload }) {
   if (!data) {
     trace = { id, state: fetchedState.ERROR, error: new Error('Invalid trace data recieved.') };
   } else {
-    trace = { data, id, state: fetchedState.DONE };
+    trace = { data, id, state: fetchedState.DONE , isTracePage: true };
   }
   const traces = { ...state.traces, [id]: trace };
   return { ...state, traces };

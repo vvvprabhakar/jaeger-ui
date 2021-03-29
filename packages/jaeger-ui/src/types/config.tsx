@@ -63,4 +63,5 @@ export type Config = {
     trackErrors: boolean | TNil;
   };
   linkPatterns?: LinkPatternsConfig;
+  googleClientId: string;
 };

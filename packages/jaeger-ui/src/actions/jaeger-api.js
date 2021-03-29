@@ -62,3 +62,7 @@ export const fetchDeepDependencyGraph = createAction(
 export const fetchDependencies = createAction('@JAEGER_API/FETCH_DEPENDENCIES', () =>
   JaegerAPI.fetchDependencies()
 );
+
+export const validateUser = createAction('@JAEGER_API/VALIDATE_USER',userId =>
+  JaegerAPI.validateUser(userId)
+);

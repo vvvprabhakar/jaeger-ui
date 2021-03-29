@@ -18,7 +18,7 @@ import queryString from 'query-string';
 import { connect } from 'react-redux';
 import { match } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
-
+import Page from '../App/Page';
 import { actions as diffActions } from './duck';
 import { getUrl, TDiffRouteParams } from './url';
 import TraceDiffGraph from './TraceDiffGraph';
@@ -143,6 +143,7 @@ export class TraceDiffImpl extends React.PureComponent<TStateProps & TDispatchPr
     const traceB = b ? tracesData.get(b) || { id: b } : null;
     const cohortData: FetchedTrace[] = cohort.map(id => tracesData.get(id) || { id });
     return (
+      <Page>
       <React.Fragment>
         <div key="header" ref={this.headerWrapperRef}>
           <TraceDiffHeader
@@ -158,6 +159,7 @@ export class TraceDiffImpl extends React.PureComponent<TStateProps & TDispatchPr
           <TraceDiffGraph a={traceA} b={traceB} />
         </div>
       </React.Fragment>
+      </Page>
     );
   }
 }

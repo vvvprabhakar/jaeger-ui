@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import store from 'store';
 import memoizeOne from 'memoize-one';
-
+import Page from '../App/Page';
 import SearchForm from './SearchForm';
 import SearchResults, { sortFormSelector } from './SearchResults';
 import { isSameQuery, getUrl, getUrlState } from './url';
@@ -34,10 +34,10 @@ import { actions as traceDiffActions } from '../TraceDiff/duck';
 import { fetchedState } from '../../constants';
 import { sortTraces } from '../../model/search';
 import { stripEmbeddedState } from '../../utils/embedded-url';
-import FileLoader from './FileLoader';
+// import FileLoader from './FileLoader';
 
 import './index.css';
-import JaegerLogo from '../../img/jaeger-logo.svg';
+// import JaegerLogo from '../../img/jaeger-logo.svg';
 
 const TabPane = Tabs.TabPane;
 
@@ -88,13 +88,14 @@ export class SearchTracePageImpl extends Component {
       services,
       traceResults,
       queryOfResults,
-      loadJsonTraces,
+     // loadJsonTraces,
       urlQueryParams,
     } = this.props;
-    const hasTraceResults = traceResults && traceResults.length > 0;
+    // const hasTraceResults = traceResults && traceResults.length > 0;
     const showErrors = errors && !loadingTraces;
-    const showLogo = isHomepage && !hasTraceResults && !loadingTraces && !errors;
+   // const showLogo = isHomepage && !hasTraceResults && !loadingTraces && !errors;
     return (
+    <Page>
       <Row className="SearchTracePage--row">
         {!embedded && (
           <Col span={6} className="SearchTracePage--column">
@@ -103,13 +104,10 @@ export class SearchTracePageImpl extends Component {
                 <TabPane tab="Search" key="searchForm">
                   {!loadingServices && services ? <SearchForm services={services} /> : <LoadingIndicator />}
                 </TabPane>
-                <TabPane tab="JSON File" key="fileLoader">
-                  <FileLoader
-                    loadJsonTraces={(fileList: FileList) => {
-                      loadJsonTraces(fileList);
-                    }}
-                  />
-                </TabPane>
+                {/* <TabPane tab="JSON File" key="fileLoader">
+                  <FileLoader loadJsonTraces={loadJsonTraces} />
+                </TabPane> */}
+
               </Tabs>
             </div>
           </Col>
@@ -140,16 +138,9 @@ export class SearchTracePageImpl extends Component {
               traces={traceResults}
             />
           )}
-          {showLogo && (
-            <img
-              className="SearchTracePage--logo js-test-logo"
-              alt="presentation"
-              src={JaegerLogo}
-              width="400"
-            />
-          )}
         </Col>
       </Row>
+      </Page>
     );
   }
 }
@@ -193,13 +184,12 @@ SearchTracePageImpl.propTypes = {
       message: PropTypes.string,
     })
   ),
-  loadJsonTraces: PropTypes.func,
+  // loadJsonTraces: PropTypes.func,
 };
 
 const stateTraceXformer = memoizeOne(stateTrace => {
   const { traces: traceMap, search } = stateTrace;
   const { query, results, state, error: traceError } = search;
-
   const loadingTraces = state === fetchedState.LOADING;
   const traces = results.map(id => traceMap[id].data);
   const maxDuration = Math.max.apply(null, traces.map(tr => tr.duration));

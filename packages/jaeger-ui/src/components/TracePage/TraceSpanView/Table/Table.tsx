@@ -48,8 +48,10 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
 )
 
 // yes this is recursive, but the depth never exceeds three so it seems safe enough
-const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>
-  columns[0].columns ? findFirstColumn(columns[0].columns) : columns[0]
+const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>{
+
+ return columns[0]&& columns[0].columns ? findFirstColumn(columns[0].columns) : columns[0];
+}
 
 function mdKeyboardArrowUp (){
   return (<MdKeyboardArrowUp />);
@@ -94,26 +96,6 @@ const getStyles = (props: any, disableResizing = false, align = 'left') => [
   },
 ]
 
-const selectionHook = (hooks: Hooks<any>) => {
-  hooks.allColumns.push((columns) => [
-    // Let's make a column for selection
-    {
-      id: '_selector',
-      disableResizing: true,
-      disableGroupBy: true,
-      minWidth: 45,
-      width: 45,
-      maxWidth: 45,
-    },
-    ...columns,
-  ])
-  hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
-    // fix the parent group of the selection button to not be resizable
-    const selectionGroupHeader = headerGroups[0].headers[0]
-    selectionGroupHeader.canResize = false
-  })
-}
-
 const headerProps = <T extends Record<string, unknown>>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
   getStyles(props, column && column.disableResizing, column && column.align)
 
@@ -141,8 +123,7 @@ const hooks = [
   useFlexLayout,
   usePagination,
   useResizeColumns,
-  useRowSelect,
-  selectionHook,
+  useRowSelect
 ]
 
 const filterTypes = {
