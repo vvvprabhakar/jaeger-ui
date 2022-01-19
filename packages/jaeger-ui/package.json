@@ -38,7 +38,7 @@
     "@jaegertracing/plexus": "0.2.0",
     "@types/classnames": "^2.2.7",
     "@types/deep-freeze": "^0.1.1",
-    "@types/history": "^4.7.2",
+    "@types/history": "^5.0.0",
     "@types/lodash": "^4.14.123",
     "@types/memoize-one": "4.1.1",
     "@types/moment": "^2.13.0",
